@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Waste Records - Restaurant Food Waste Management Platform</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header>
+    <div class="topbar">
+      <div class="brand-title">Restaurant Food Waste Management Platform</div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Overview</a></li>
+          <li><a href="records.html" class="current">Waste Records</a></li>
+          <li><a href="dashboard.html">Trend Dashboard</a></li>
+          <li><a href="terms.html">Terms of Service</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="page-head">
+      <h1>Waste Records and Entry Log</h1>
+      <p>Record food waste entries with category, reason, quantity, date, department, and improvement observations.</p>
+    </div>
+
+    <div id="entry-recorded" class="notice-box">
+      <strong>Record Checked:</strong> Your form inputs met all required fields. Sample rows below show how waste entries look across departments.
+    </div>
+
+    <div class="two-column">
+      <section class="panel">
+        <h2>Log New Waste Record</h2>
+        <form action="#entry-recorded">
+          <div class="form-field">
+            <label for="waste-date">Date</label>
+            <input type="date" id="waste-date" name="waste-date" required />
+          </div>
+
+          <div class="form-field">
+            <label for="department">Department</label>
+            <select id="department" name="department" required>
+              <option value="">Choose department</option>
+              <option value="Hot Kitchen">Hot Kitchen</option>
+              <option value="Cold Pantry">Cold Pantry</option>
+              <option value="Bakery">Bakery</option>
+              <option value="Dining Service">Dining Service</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="category">Food Category</label>
+            <select id="category" name="category" required>
+              <option value="">Choose food category</option>
+              <option value="Cooked Meals">Cooked Meals</option>
+              <option value="Grains and Rice">Grains and Rice</option>
+              <option value="Fresh Produce">Fresh Produce</option>
+              <option value="Dairy and Proteins">Dairy and Proteins</option>
+              <option value="Bakery and Pastries">Bakery and Pastries</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="reason">Reason for Waste</label>
+            <select id="reason" name="reason" required>
+              <option value="">Choose reason</option>
+              <option value="Overproduction">Overproduction</option>
+              <option value="Spoilage">Spoilage</option>
+              <option value="Incorrect Preparation">Incorrect Preparation</option>
+              <option value="Unsold Items">Unsold Items</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="quantity">Quantity (kg)</label>
+            <input type="number" id="quantity" name="quantity" step="0.1" min="0.1" placeholder="e.g. 4.5" required />
+          </div>
+
+          <div class="form-field">
+            <label for="item-name">Item Name</label>
+            <input type="text" id="item-name" name="item-name" placeholder="e.g. Steamed Basmati Rice" required />
+          </div>
+
+          <div class="form-field">
+            <label for="observation">Improvement Observation</label>
+            <textarea id="observation" name="observation" rows="3" placeholder="Note how to prevent recurrence"></textarea>
+          </div>
+
+          <button type="submit">Submit Waste Record</button>
+        </form>
+      </section>
+
+      <section class="panel">
+        <h2>Recorded Food Waste Entries</h2>
+
+        <div class="filter-controls">
+          <input type="radio" name="dept-filter" id="dept-all" checked />
+          <input type="radio" name="dept-filter" id="dept-kitchen" />
+          <input type="radio" name="dept-filter" id="dept-pantry" />
+          <input type="radio" name="dept-filter" id="dept-bakery" />
+
+          <div class="filter-bar">
+            <label for="dept-all">All Departments</label>
+            <label for="dept-kitchen">Hot Kitchen</label>
+            <label for="dept-pantry">Cold Pantry</label>
+            <label for="dept-bakery">Bakery</label>
+          </div>
+
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Department</th>
+                  <th>Food Category</th>
+                  <th>Reason</th>
+                  <th>Quantity</th>
+                  <th>Improvement Observation</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-dept="kitchen">
+                  <td>2026-11-18</td>
+                  <td>Hot Kitchen</td>
+                  <td>Grains and Rice (Jeera Rice)</td>
+                  <td>Overproduction</td>
+                  <td>6.4 kg</td>
+                  <td>Cook second rice batch only after 8:00 PM on weekdays.</td>
+                </tr>
+                <tr data-dept="pantry">
+                  <td>2026-11-18</td>
+                  <td>Cold Pantry</td>
+                  <td>Fresh Produce (Leafy Greens)</td>
+                  <td>Spoilage</td>
+                  <td>3.2 kg</td>
+                  <td>Audit walk-in chiller shelf labels every morning and evening.</td>
+                </tr>
+                <tr data-dept="kitchen">
+                  <td>2026-11-17</td>
+                  <td>Hot Kitchen</td>
+                  <td>Dairy and Proteins (Paneer)</td>
+                  <td>Incorrect Preparation</td>
+                  <td>2.5 kg</td>
+                  <td>Verify portion weight and spice mix before bulk marination.</td>
+                </tr>
+                <tr data-dept="bakery">
+                  <td>2026-11-17</td>
+                  <td>Bakery</td>
+                  <td>Bakery and Pastries (Dinner Rolls)</td>
+                  <td>Unsold Items</td>
+                  <td>4.0 kg</td>
+                  <td>Lower late-evening roll bake count on low-booking nights.</td>
+                </tr>
+                <tr data-dept="pantry">
+                  <td>2026-11-16</td>
+                  <td>Cold Pantry</td>
+                  <td>Fresh Produce (Tomatoes)</td>
+                  <td>Spoilage</td>
+                  <td>2.8 kg</td>
+                  <td>Move older crates to front rack during morning receiving.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div>Restaurant Food Waste Management Platform</div>
+      <div class="footer-links">
+        <a href="terms.html">Terms of Service</a>
+        <a href="privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
