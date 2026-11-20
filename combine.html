@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Restaurant Food Waste Management Platform</title>
+  <style>
+/* Purple & Black Dark Theme — Flat, Sharp, Non-Animated */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
+  animation: none;
+  transition: none;
+}
+
+body {
+  font-family: Georgia, "Times New Roman", serif;
+  background-color: #121114;
+  color: #e7e3ec;
+  line-height: 1.6;
+}
+
+a {
+  color: #e7e3ec;
+  text-decoration: underline;
+}
+
+/* ===== HEADER & NAVIGATION ===== */
+header {
+  background-color: #0b0a0d;
+  color: #e7e3ec;
+  border-bottom: 2px solid #6b468c;
+}
+
+.topbar {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 18px 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.brand-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  letter-spacing: 0.02em;
+  color: #e7e3ec;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+nav a {
+  text-decoration: none;
+  padding: 7px 12px;
+  border: 1px solid #4e3b63;
+  background-color: #1c1921;
+  color: #e7e3ec;
+  font-size: 0.9rem;
+}
+
+nav a.current {
+  background-color: #5b387a;
+  border-color: #e7e3ec;
+  color: #e7e3ec;
+  font-weight: bold;
+}
+
+/* ===== MAIN LAYOUT ===== */
+main {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 32px 22px 54px;
+}
+
+.page-section {
+  display: none;
+}
+
+.page-section.active {
+  display: block;
+}
+
+.page-head {
+  border-bottom: 2px solid #5b387a;
+  padding-bottom: 16px;
+  margin-bottom: 26px;
+}
+
+.page-head h1 {
+  font-size: 1.85rem;
+  color: #e7e3ec;
+  margin-bottom: 6px;
+}
+
+.page-head p {
+  color: #b7afc2;
+  font-size: 1rem;
+}
+
+/* ===== PANELS & GRID ===== */
+.panel {
+  background-color: #1b1820;
+  border: 1px solid #4e3b63;
+  padding: 22px;
+  margin-bottom: 24px;
+}
+
+.panel h2 {
+  font-size: 1.22rem;
+  color: #e7e3ec;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #3c2f4a;
+}
+
+.two-column {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 22px;
+  align-items: start;
+}
+
+@media (max-width: 820px) {
+  .two-column {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== FORMS & BUTTONS ===== */
+.form-field {
+  margin-bottom: 14px;
+}
+
+.form-field label {
+  display: block;
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: #e7e3ec;
+  margin-bottom: 5px;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+  width: 100%;
+  padding: 9px 11px;
+  border: 1px solid #4e3b63;
+  background-color: #0e0d11;
+  color: #e7e3ec;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 0.95rem;
+}
+
+button,
+.action-link {
+  display: inline-block;
+  padding: 10px 16px;
+  background-color: #5b387a;
+  color: #e7e3ec;
+  border: 1px solid #9b7bb8;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 0.92rem;
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.secondary-link {
+  display: inline-block;
+  padding: 10px 16px;
+  background-color: #26212e;
+  color: #e7e3ec;
+  border: 1px solid #4e3b63;
+  font-size: 0.92rem;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+/* ===== TABLES ===== */
+.table-scroll {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.91rem;
+}
+
+th,
+td {
+  border: 1px solid #3c2f4a;
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  background-color: #0b0a0d;
+  color: #e7e3ec;
+  font-weight: bold;
+}
+
+td {
+  background-color: #16131a;
+  color: #e7e3ec;
+}
+
+/* ===== DEPARTMENT FILTER TABS ===== */
+.filter-controls input[type="radio"] {
+  display: none;
+}
+
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.filter-bar label {
+  padding: 7px 13px;
+  border: 1px solid #4e3b63;
+  background-color: #0e0d11;
+  color: #e7e3ec;
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: bold;
+}
+
+#dept-all:checked ~ .filter-bar label[for="dept-all"],
+#dept-kitchen:checked ~ .filter-bar label[for="dept-kitchen"],
+#dept-pantry:checked ~ .filter-bar label[for="dept-pantry"],
+#dept-bakery:checked ~ .filter-bar label[for="dept-bakery"] {
+  background-color: #5b387a;
+  border-color: #e7e3ec;
+  color: #e7e3ec;
+}
+
+#dept-kitchen:checked ~ .table-scroll tbody tr:not([data-dept="kitchen"]),
+#dept-pantry:checked ~ .table-scroll tbody tr:not([data-dept="pantry"]),
+#dept-bakery:checked ~ .table-scroll tbody tr:not([data-dept="bakery"]) {
+  display: none;
+}
+
+/* ===== TREND BARS ===== */
+.bar-row {
+  margin-bottom: 15px;
+}
+
+.bar-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.91rem;
+  font-weight: bold;
+  color: #e7e3ec;
+  margin-bottom: 5px;
+}
+
+.bar-track {
+  width: 100%;
+  height: 18px;
+  border: 1px solid #4e3b63;
+  background-color: #0e0d11;
+}
+
+.bar-fill-primary {
+  height: 100%;
+  background-color: #6b468c;
+}
+
+.bar-fill-secondary {
+  height: 100%;
+  background-color: #8c5a3c;
+}
+
+/* ===== CONFIRMATION NOTICE ===== */
+.notice-box {
+  display: none;
+  border: 2px solid #6b468c;
+  background-color: #241b2e;
+  color: #e7e3ec;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+}
+
+.notice-box:target {
+  display: block;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  background-color: #0b0a0d;
+  color: #e7e3ec;
+  border-top: 2px solid #6b468c;
+  padding: 20px 22px;
+  font-size: 0.88rem;
+}
+
+.footer-inner {
+  max-width: 1140px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 18px;
+}
+
+.footer-links a {
+  color: #e7e3ec;
+  text-decoration: underline;
+}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="topbar">
+      <div class="brand-title">Restaurant Food Waste Management Platform</div>
+      <nav>
+        <ul>
+          <li><a href="#index" data-page="index" class="current">Overview</a></li>
+          <li><a href="#records" data-page="records">Waste Records</a></li>
+          <li><a href="#dashboard" data-page="dashboard">Trend Dashboard</a></li>
+          <li><a href="#terms" data-page="terms">Terms of Service</a></li>
+          <li><a href="#privacy" data-page="privacy">Privacy Policy</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- OVERVIEW (index.html) -->
+    <div id="page-index" class="page-section active">
+      <div class="page-head">
+        <h1>Restaurant Food Waste Management Platform</h1>
+        <p>Recording food waste by category, reason, quantity, date, and department to identify recurring sources.</p>
+      </div>
+
+      <section class="panel">
+        <h2>Problem Statement</h2>
+        <p>
+          Restaurants discard food due to overproduction, spoilage, incorrect preparation, and unsold items, but managers often lack visibility into where waste is occurring.
+        </p>
+      </section>
+
+      <section class="panel">
+        <h2>Objective</h2>
+        <p>
+          Develop a system that records food waste by category and identifies recurring waste sources.
+        </p>
+      </section>
+
+      <section class="panel">
+        <h2>Platform Modules and Tracked Fields</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>Details Captured</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Waste Records</td>
+              <td>Date, department, food category, waste reason, quantity, and item notes</td>
+            </tr>
+            <tr>
+              <td>Food Categories and Reasons</td>
+              <td>Categories paired with overproduction, spoilage, incorrect preparation, and unsold items</td>
+            </tr>
+            <tr>
+              <td>Trend Dashboard</td>
+              <td>Distribution of waste across reasons and food categories</td>
+            </tr>
+            <tr>
+              <td>Improvement Observations</td>
+              <td>Actionable notes to reduce repeat waste in each department</td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap;">
+          <a href="#records" data-page="records" class="action-link">Go to Waste Records</a>
+          <a href="#dashboard" data-page="dashboard" class="secondary-link">Go to Trend Dashboard</a>
+        </div>
+      </section>
+    </div>
+
+    <!-- WASTE RECORDS (records.html) -->
+    <div id="page-records" class="page-section">
+      <div class="page-head">
+        <h1>Waste Records and Entry Log</h1>
+        <p>Record food waste entries with category, reason, quantity, date, department, and improvement observations.</p>
+      </div>
+
+      <div id="entry-recorded" class="notice-box">
+        <strong>Record Checked:</strong> Your form inputs met all required fields. Sample rows below show how waste entries look across departments.
+      </div>
+
+      <div class="two-column">
+        <section class="panel">
+          <h2>Log New Waste Record</h2>
+          <form action="#entry-recorded">
+            <div class="form-field">
+              <label for="waste-date">Date</label>
+              <input type="date" id="waste-date" name="waste-date" required />
+            </div>
+
+            <div class="form-field">
+              <label for="department">Department</label>
+              <select id="department" name="department" required>
+                <option value="">Choose department</option>
+                <option value="Hot Kitchen">Hot Kitchen</option>
+                <option value="Cold Pantry">Cold Pantry</option>
+                <option value="Bakery">Bakery</option>
+                <option value="Dining Service">Dining Service</option>
+              </select>
+            </div>
+
+            <div class="form-field">
+              <label for="category">Food Category</label>
+              <select id="category" name="category" required>
+                <option value="">Choose food category</option>
+                <option value="Cooked Meals">Cooked Meals</option>
+                <option value="Grains and Rice">Grains and Rice</option>
+                <option value="Fresh Produce">Fresh Produce</option>
+                <option value="Dairy and Proteins">Dairy and Proteins</option>
+                <option value="Bakery and Pastries">Bakery and Pastries</option>
+              </select>
+            </div>
+
+            <div class="form-field">
+              <label for="reason">Reason for Waste</label>
+              <select id="reason" name="reason" required>
+                <option value="">Choose reason</option>
+                <option value="Overproduction">Overproduction</option>
+                <option value="Spoilage">Spoilage</option>
+                <option value="Incorrect Preparation">Incorrect Preparation</option>
+                <option value="Unsold Items">Unsold Items</option>
+              </select>
+            </div>
+
+            <div class="form-field">
+              <label for="quantity">Quantity (kg)</label>
+              <input type="number" id="quantity" name="quantity" step="0.1" min="0.1" placeholder="e.g. 4.5" required />
+            </div>
+
+            <div class="form-field">
+              <label for="item-name">Item Name</label>
+              <input type="text" id="item-name" name="item-name" placeholder="e.g. Steamed Basmati Rice" required />
+            </div>
+
+            <div class="form-field">
+              <label for="observation">Improvement Observation</label>
+              <textarea id="observation" name="observation" rows="3" placeholder="Note how to prevent recurrence"></textarea>
+            </div>
+
+            <button type="submit">Submit Waste Record</button>
+          </form>
+        </section>
+
+        <section class="panel">
+          <h2>Recorded Food Waste Entries</h2>
+
+          <div class="filter-controls">
+            <input type="radio" name="dept-filter" id="dept-all" checked />
+            <input type="radio" name="dept-filter" id="dept-kitchen" />
+            <input type="radio" name="dept-filter" id="dept-pantry" />
+            <input type="radio" name="dept-filter" id="dept-bakery" />
+
+            <div class="filter-bar">
+              <label for="dept-all">All Departments</label>
+              <label for="dept-kitchen">Hot Kitchen</label>
+              <label for="dept-pantry">Cold Pantry</label>
+              <label for="dept-bakery">Bakery</label>
+            </div>
+
+            <div class="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Department</th>
+                    <th>Food Category</th>
+                    <th>Reason</th>
+                    <th>Quantity</th>
+                    <th>Improvement Observation</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr data-dept="kitchen">
+                    <td>2026-11-18</td>
+                    <td>Hot Kitchen</td>
+                    <td>Grains and Rice (Jeera Rice)</td>
+                    <td>Overproduction</td>
+                    <td>6.4 kg</td>
+                    <td>Cook second rice batch only after 8:00 PM on weekdays.</td>
+                  </tr>
+                  <tr data-dept="pantry">
+                    <td>2026-11-18</td>
+                    <td>Cold Pantry</td>
+                    <td>Fresh Produce (Leafy Greens)</td>
+                    <td>Spoilage</td>
+                    <td>3.2 kg</td>
+                    <td>Audit walk-in chiller shelf labels every morning and evening.</td>
+                  </tr>
+                  <tr data-dept="kitchen">
+                    <td>2026-11-17</td>
+                    <td>Hot Kitchen</td>
+                    <td>Dairy and Proteins (Paneer)</td>
+                    <td>Incorrect Preparation</td>
+                    <td>2.5 kg</td>
+                    <td>Verify portion weight and spice mix before bulk marination.</td>
+                  </tr>
+                  <tr data-dept="bakery">
+                    <td>2026-11-17</td>
+                    <td>Bakery</td>
+                    <td>Bakery and Pastries (Dinner Rolls)</td>
+                    <td>Unsold Items</td>
+                    <td>4.0 kg</td>
+                    <td>Lower late-evening roll bake count on low-booking nights.</td>
+                  </tr>
+                  <tr data-dept="pantry">
+                    <td>2026-11-16</td>
+                    <td>Cold Pantry</td>
+                    <td>Fresh Produce (Tomatoes)</td>
+                    <td>Spoilage</td>
+                    <td>2.8 kg</td>
+                    <td>Move older crates to front rack during morning receiving.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- TREND DASHBOARD (dashboard.html) -->
+    <div id="page-dashboard" class="page-section">
+      <div class="page-head">
+        <h1>Waste Trend Dashboard and Observations</h1>
+        <p>Recurring waste patterns by reason and food category, paired with actionable kitchen observations.</p>
+      </div>
+
+      <div class="two-column">
+        <section class="panel">
+          <h2>Waste Share by Reason (Weekly)</h2>
+
+          <div class="bar-row">
+            <div class="bar-meta">
+              <span>Overproduction</span>
+              <span>42% (28.5 kg)</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill-primary" style="width: 42%;"></div>
+            </div>
+          </div>
+
+          <div class="bar-row">
+            <div class="bar-meta">
+              <span>Spoilage</span>
+              <span>26% (17.6 kg)</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill-secondary" style="width: 26%;"></div>
+            </div>
+          </div>
+
+          <div class="bar-row">
+            <div class="bar-meta">
+              <span>Unsold Items</span>
+              <span>19% (12.9 kg)</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill-primary" style="width: 19%;"></div>
+            </div>
+          </div>
+
+          <div class="bar-row">
+            <div class="bar-meta">
+              <span>Incorrect Preparation</span>
+              <span>13% (8.8 kg)</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill-secondary" style="width: 13%;"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>Waste Share by Food Category</h2>
+
+          <div class="bar-row">
+            <div class="bar-meta">
+              <span>Cooked Meals and Grains</span>
+              <span>38%</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill-primary" style="width: 38%;"></div>
+            </div>
+          </div>
+
+          <div class="bar-row">
+            <div class="bar-meta">
+              <span>Fresh Produce</span>
+              <span>29%</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill-secondary" style="width: 29%;"></div>
+            </div>
+          </div>
+
+          <div class="bar-row">
+            <div class="bar-meta">
+              <span>Bakery and Pastries</span>
+              <span>18%</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill-primary" style="width: 18%;"></div>
+            </div>
+          </div>
+
+          <div class="bar-row">
+            <div class="bar-meta">
+              <span>Dairy and Proteins</span>
+              <span>15%</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill-secondary" style="width: 15%;"></div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <section class="panel">
+        <h2>Recurring Waste Sources and Improvement Observations</h2>
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Department</th>
+                <th>Primary Category</th>
+                <th>Dominant Reason</th>
+                <th>Observed Pattern</th>
+                <th>Improvement Observation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Hot Kitchen</td>
+                <td>Grains and Rice</td>
+                <td>Overproduction</td>
+                <td>Large rice and curry batches left unserved after 9:30 PM</td>
+                <td>Scale evening batch sizes to reservation counts and cook smaller late top-ups.</td>
+              </tr>
+              <tr>
+                <td>Cold Pantry</td>
+                <td>Fresh Produce</td>
+                <td>Spoilage</td>
+                <td>Wilted greens and soft tomatoes found in back bins</td>
+                <td>Enforce first-in, first-out bin rotation and daily morning produce checks.</td>
+              </tr>
+              <tr>
+                <td>Bakery</td>
+                <td>Bakery and Pastries</td>
+                <td>Unsold Items</td>
+                <td>Extra bread and pastry trays remaining at closing</td>
+                <td>Match final bake run to historical closing demand rather than fixed quotas.</td>
+              </tr>
+              <tr>
+                <td>Hot Kitchen</td>
+                <td>Dairy and Proteins</td>
+                <td>Incorrect Preparation</td>
+                <td>Over-seasoned or overcooked portions rejected at pass</td>
+                <td>Standardize recipe cards and weigh key ingredients at prep stations.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- TERMS OF SERVICE (terms.html) -->
+    <div id="page-terms" class="page-section">
+      <div class="page-head">
+        <h1>Terms of Service</h1>
+        <p>Guidelines for using the Restaurant Food Waste Management Platform.</p>
+      </div>
+
+      <section class="panel">
+        <h2>1. Purpose of Use</h2>
+        <p>
+          This platform is provided for logging food waste records by category, department, reason, quantity, and date, and for reviewing recurring waste trends and improvement observations.
+        </p>
+      </section>
+
+      <section class="panel">
+        <h2>2. Accuracy of Entries</h2>
+        <p>
+          Users entering quantities, dates, food categories, waste reasons, and improvement notes are responsible for recording accurate operational figures so management decisions rely on dependable data.
+        </p>
+      </section>
+
+      <section class="panel">
+        <h2>3. Food Safety and Operational Responsibility</h2>
+        <p>
+          Waste tracking records support kitchen review and process improvement. Food safety compliance, spoilage inspection, and disposal rules remain the responsibility of restaurant management and local food safety standards.
+        </p>
+      </section>
+    </div>
+
+    <!-- PRIVACY POLICY (privacy.html) -->
+    <div id="page-privacy" class="page-section">
+      <div class="page-head">
+        <h1>Privacy Policy</h1>
+        <p>How operational and log data is handled within the platform.</p>
+      </div>
+
+      <section class="panel">
+        <h2>1. Data Recorded</h2>
+        <p>
+          The platform tracks operational food waste entries including dates, departments, food categories, waste reasons, quantities, item names, and improvement observations. It does not require personal banking or sensitive consumer profiles to function.
+        </p>
+      </section>
+
+      <section class="panel">
+        <h2>2. Access and Use</h2>
+        <p>
+          Recorded entries and trend summaries are intended for internal restaurant operations, kitchen evaluation, and project review. Avoid entering confidential personal contact details inside observation fields.
+        </p>
+      </section>
+
+      <section class="panel">
+        <h2>3. Policy Updates</h2>
+        <p>
+          Updates to this privacy notice will be published directly on this page whenever data handling practices change.
+        </p>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div>Restaurant Food Waste Management Platform</div>
+      <div class="footer-links">
+        <a href="#terms" data-page="terms">Terms of Service</a>
+        <a href="#privacy" data-page="privacy">Privacy Policy</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const titles = {
+      index: "Restaurant Food Waste Management Platform",
+      records: "Waste Records - Restaurant Food Waste Management Platform",
+      dashboard: "Trend Dashboard - Restaurant Food Waste Management Platform",
+      terms: "Terms of Service - Restaurant Food Waste Management Platform",
+      privacy: "Privacy Policy - Restaurant Food Waste Management Platform"
+    };
+
+    function showPage(pageId) {
+      if (!titles[pageId]) pageId = "index";
+      document.querySelectorAll(".page-section").forEach(sec => {
+        sec.classList.toggle("active", sec.id === "page-" + pageId);
+      });
+      document.querySelectorAll("nav a[data-page]").forEach(link => {
+        link.classList.toggle("current", link.dataset.page === pageId);
+      });
+      document.title = titles[pageId];
+    }
+
+    document.querySelectorAll("a[data-page]").forEach(link => {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        const pageId = link.dataset.page;
+        history.pushState(null, "", "#" + pageId);
+        showPage(pageId);
+        window.scrollTo(0, 0);
+      });
+    });
+
+    window.addEventListener("hashchange", () => {
+      const hash = location.hash.replace("#", "");
+      if (hash === "entry-recorded") {
+        showPage("records");
+      } else if (titles[hash]) {
+        showPage(hash);
+      }
+    });
+
+    const initialHash = location.hash.replace("#", "");
+    if (initialHash === "entry-recorded") {
+      showPage("records");
+    } else if (titles[initialHash]) {
+      showPage(initialHash);
+    }
+  </script>
+</body>
+</html>
